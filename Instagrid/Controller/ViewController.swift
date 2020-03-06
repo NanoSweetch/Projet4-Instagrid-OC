@@ -21,7 +21,8 @@ class ViewController: UIViewController {
                viewGridBottomLeft.layer.cornerRadius = 4
                viewGridBottomRight.layer.cornerRadius = 4
         
-        // Initialise l'annimation du swipe au premier lancement de l'application
+        // Initialise l'animation du swipe au premier lancement de l'application
+        // Initializes the annimation of the swipe at the first launch of the application.
     self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
         
     }
@@ -54,6 +55,7 @@ class ViewController: UIViewController {
     }
     
     // Configuration des styles et actions des boutons
+    // Configuring Button Styles and Actions
     enum StyleGrid {
         case rectangleTop, rectangleBottom, square
     }
@@ -64,6 +66,8 @@ class ViewController: UIViewController {
         }
     }
     
+    // En fonction du bouton sélectionné on cache une vue ou on les affiche et l'image du bouton est modifié
+    // Depending on the selected button, a frame is hidden or displayed and the button image is changed.
     private func setStyle(_ style: StyleGrid) {
         switch style {
         case .rectangleTop:
@@ -91,27 +95,67 @@ class ViewController: UIViewController {
         }
     }
     
-     // Fonction detection de l'action de swipe
+     // Fonction détection de l'action de swipe
+     // Swipe action detection function
      @objc func handlePanGesture(gesture: UIPanGestureRecognizer) {
+        
+        // Constante utiliser pour sortir la vue de l'écran pendant l'animation
+        // Constant used to exit the screen view during animation
+        let screenHeight = UIScreen.main.bounds.height
+        let screenWidth = UIScreen.main.bounds.width
+        
+        
          if gesture.state == .began{
-             
+            // Pour le statut .began rien ne se passe
+            // For the status .began nothing happens
          } else if gesture.state == .changed {
+            // Le statut changed permet de commencer le déplacement de la vue
+            // The status changed allows you to start moving the view
              let translation = gesture.translation(in: self.view)
-             
              // En fonction des conditions d'orientation de l'appareil, le swipe est possible soit à gauche soit en haut
+             // Depending on the orientation of the device, the swipe is possible either to the left or to the top.
              if windowInterfaceOrientation?.isPortrait == true {
                  viewGrid.transform = CGAffineTransform(translationX: 0, y: translation.y)
              } else {
                  viewGrid.transform = CGAffineTransform(translationX: translation.x, y: 0)
              }
+            
          } else if gesture.state == .ended {
-             UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
-                 self.viewGrid.transform = .identity
-             })
+            // Une fois le swipe terminé en fonction de l'orientation de l'écran l'animation s'active soit pour le swipe up soit pour le swipe left
+            // Once the swipe is finished, depending on the screen orientation, the animation is activated either for the swipe up or for the swipe left.
+            if windowInterfaceOrientation?.isPortrait == true {
+                // Si le device est en mode portrait la vue quitte l'écran par le haut et réapparait au centre de l'écran
+                // If the device is in portrait mode, the view leaves the screen from the top and reappears in the center of the screen.
+                UIView.animate(withDuration: 0.4, animations: {
+                              self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -screenHeight)
+                          }, completion: { (success) in
+                              if success {
+                                  UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+                                      self.viewGrid.transform = .identity
+                                  })
+                              }
+                          })
+                
+            } else {
+                // Si le device est en mode landscape la vue quitte l'écran par le côté et réapparait au centre de l'écran
+                // If the device is in landscape mode the view leaves the screen from the side and reappears in the center of the screen.
+                UIView.animate(withDuration: 0.4, animations: {
+                              self.viewGrid.transform = CGAffineTransform(translationX: -screenWidth, y: 0)
+                          }, completion: { (success) in
+                              if success {
+                                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+                                      self.viewGrid.transform = .identity
+                                  })
+                              }
+                          })
+                
+            }
+            
          }
      }
      
-   // Fonction détection de l'orientation
+    // Fonction détection de l'orientation
+    // Orientation detection function
      override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
           super.willTransition(to: newCollection, with: coordinator)
           
@@ -119,6 +163,7 @@ class ViewController: UIViewController {
               guard let windowInterfaceOrientation = self.windowInterfaceOrientation else { return }
               
              // Si l'appareil est en landscape le label change et le swipe aussi et inversement avec else
+             // If the device is in landscape the label changes and the swipe as well and vice versa with else.
               if windowInterfaceOrientation.isLandscape {
                   // activate landscape changes
                  self.swipeLabel.text = "Swipe left to share"
