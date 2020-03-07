@@ -16,6 +16,8 @@ class ViewController: UIViewController {
         
         //Configuring the radius of the grid view
                viewGrid.layer.cornerRadius = 15
+               viewGrid.layer.shadowRadius = 5
+               viewGrid.layer.shadowOpacity = 0.5
                viewGridTopLeft.layer.cornerRadius = 4
                viewGridTopRight.layer.cornerRadius = 4
                viewGridBottomLeft.layer.cornerRadius = 4
@@ -137,6 +139,7 @@ class ViewController: UIViewController {
                                   })
                               }
                           })
+                shareVG()
                 
             } else {
                 // Si le device est en mode landscape la vue quitte l'écran par le côté et réapparait au centre de l'écran
@@ -152,11 +155,28 @@ class ViewController: UIViewController {
                                   })
                               }
                           })
-                
+                shareVG()
             }
             
          }
      }
+    
+    // Fonction de partage
+    func shareVG(){
+        // Récupération de la viewGrid pour la transformer en image
+        UIGraphicsBeginImageContext(viewGrid.frame.size)
+        viewGrid.layer.render(in: UIGraphicsGetCurrentContext()!)
+        guard let imageVG = UIGraphicsGetImageFromCurrentImageContext() else {
+            return
+        }
+    
+        // Début de la séquance de partage
+        // On récupère l'image généré pour l'envoyer à l'activity controller
+        let activityViewController = UIActivityViewController(activityItems: [imageVG], applicationActivities: nil)
+        
+        // On ouvre la pop-up
+        present(activityViewController, animated: true, completion: nil)
+    }
      
     // Fonction détection de l'orientation
     // Orientation detection function
