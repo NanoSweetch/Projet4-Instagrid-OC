@@ -130,6 +130,8 @@ class ViewController: UIViewController {
                               self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -screenHeight)
                           }, completion: { (success) in
                               if success {
+                                self.viewGrid.transform = .identity
+                                self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
                                   UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
                                       self.viewGrid.transform = .identity
                                   })
@@ -143,6 +145,8 @@ class ViewController: UIViewController {
                               self.viewGrid.transform = CGAffineTransform(translationX: -screenWidth, y: 0)
                           }, completion: { (success) in
                               if success {
+                                self.viewGrid.transform = .identity
+                                self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
                                 UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
                                       self.viewGrid.transform = .identity
                                   })
