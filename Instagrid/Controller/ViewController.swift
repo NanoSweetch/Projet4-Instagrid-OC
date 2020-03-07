@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +26,7 @@ class ViewController: UIViewController {
         // Initialise l'animation du swipe au premier lancement de l'application
         // Initializes the annimation of the swipe at the first launch of the application.
     self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
+        
         
     }
     
@@ -204,9 +205,5 @@ class ViewController: UIViewController {
           return UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
     }
    
-    //        let activityVC = UIActivityViewController(activityItems: [viewGrid as Any], applicationActivities: nil)
-    //        activityVC.popoverPresentationController?.sourceView = self.view
-    //
-    //        self.present(activityVC, animated: true, completion: nil)
-    
+   
 }
