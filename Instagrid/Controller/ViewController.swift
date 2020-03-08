@@ -27,7 +27,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Initializes the annimation of the swipe at the first launch of the application.
     self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
         
-        
     }
     
     // Outlet label text "Swipe [..] to share"
@@ -40,7 +39,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var viewGridBottomLeft: UIImageView!
     @IBOutlet weak var viewGridBottomRight: UIImageView!
     
-    // Outlets Buttons
+    // Outlet collection button View Grid
+    @IBOutlet weak var L1: UIButton!
+    @IBOutlet weak var L2: UIButton!
+    @IBOutlet weak var R1: UIButton!
+    @IBOutlet weak var R2: UIButton!
+
+    
+    // Action button View Grid
+    @IBAction func L1(_ sender: Any) {
+    }
+    @IBAction func L2(_ sender: Any) {
+    }
+    @IBAction func R1(_ sender: Any) {
+    }
+    @IBAction func R2(_ sender: Any) {
+    }
+    
+    
+    // Outlets Buttons Style
     @IBOutlet weak var buttonRectangleTopImg: UIButton!
     @IBOutlet weak var buttonRectangleBottomImg: UIButton!
     @IBOutlet weak var buttonSquareImg: UIButton!
@@ -98,6 +115,30 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+     // enum pour set button hidden
+    enum ButtonVGHid {
+        case isHidden, show
+    }
+    var buttonState: ButtonVGHid = .show{
+        didSet {
+            setState(buttonState)
+        }
+    }
+    private func setState(_ buttonState: ButtonVGHid) {
+           switch buttonState {
+           case .show:
+            L1.isHidden = false
+            L2.isHidden = false
+            R1.isHidden = false
+            R2.isHidden = false
+           case .isHidden:
+            L1.isHidden = true
+            L2.isHidden = true
+            R1.isHidden = true
+            R2.isHidden = true
+        }
+    }
+    
      // Fonction détection de l'action de swipe
      // Swipe action detection function
      @objc func handlePanGesture(gesture: UIPanGestureRecognizer) {
@@ -109,6 +150,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         
          if gesture.state == .began{
+            buttonState = .isHidden
             // Pour le statut .began rien ne se passe
             // For the status .began nothing happens
          } else if gesture.state == .changed {
@@ -157,6 +199,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                               }
                           })
                 shareVG()
+
             }
             
          }
@@ -177,6 +220,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         // On ouvre la pop-up
         present(activityViewController, animated: true, completion: nil)
+        buttonState = .show
     }
      
     // Fonction détection de l'orientation
