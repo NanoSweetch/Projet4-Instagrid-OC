@@ -26,7 +26,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Initialise l'animation du swipe au premier lancement de l'application
         // Initializes the annimation of the swipe at the first launch of the application.
     self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
-        
     }
     
     // Outlet label text "Swipe [..] to share"
@@ -44,24 +43,32 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var L2: UIButton!
     @IBOutlet weak var R1: UIButton!
     @IBOutlet weak var R2: UIButton!
-
     
+    // Variable d'identification de la vue pour l'image picker
+    // View identification variable for image picker
+    var flag = 0
     // Action button View Grid
     @IBAction func L1(_ sender: Any) {
+        flag = 1
+        initialImgPicker()
     }
     @IBAction func L2(_ sender: Any) {
+        flag = 2
+        initialImgPicker()
     }
     @IBAction func R1(_ sender: Any) {
+        flag = 3
+        initialImgPicker()
     }
     @IBAction func R2(_ sender: Any) {
+        flag = 4
+        initialImgPicker()
     }
-    
     
     // Outlets Buttons Style
     @IBOutlet weak var buttonRectangleTopImg: UIButton!
     @IBOutlet weak var buttonRectangleBottomImg: UIButton!
     @IBOutlet weak var buttonSquareImg: UIButton!
-    
     
     // Action button
     @IBAction func buttonRectangleTop(_ sender: Any) {
@@ -110,12 +117,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             buttonRectangleTopImg.setBackgroundImage(UIImage(named: "Layout 1"), for: .normal)
             buttonRectangleBottomImg.setBackgroundImage(UIImage(named: "Layout 2"), for: .normal)
             buttonSquareImg.setBackgroundImage(UIImage(named: "Layout Selected 3"), for: .normal)
-            
-            
         }
     }
     
-     // enum pour set button hidden
+     // Enum permettant de cacher les boutons quand le swip est actif
+     // Enum to hide or show the buttons when the swip is active or not
     enum ButtonVGHid {
         case isHidden, show
     }
@@ -220,7 +226,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         // On ouvre la pop-up
         present(activityViewController, animated: true, completion: nil)
-        buttonState = .show
+            buttonState = .show
     }
      
     // Fonction détection de l'orientation
@@ -248,6 +254,54 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
       private var windowInterfaceOrientation: UIInterfaceOrientation? {
           return UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
     }
+    
+    // Fonction d'initialisation de l'image picker pour les boutons d'ajout d'image de la VG
+    // Image picker initialization function for the VG's add image buttons
+    func initialImgPicker() {
+        let image = UIImagePickerController()
+        image.delegate = self
+        image.sourceType = .photoLibrary
+        image.allowsEditing = false
+        self.present(image, animated: true)
+    }
+    
+    // Function image picker
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            if flag == 1 {
+                viewGridTopLeft.image = image
+            } else if flag == 2 {
+                viewGridTopRight.image = image
+            } else if flag == 3 {
+                viewGridBottomLeft.image = image
+            } else if flag == 4 {
+                viewGridBottomRight.image = image
+            }
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
    
-   
+    // Peut éventuellement servir pour vérifier si les image view sont vides afin d’empêcher le swipe tant qu’elles ne seront pas remplies
+    
+    //self.imageSelected = .L1
+//   enum ViewGridIMGPicker {
+//              case L1
+//          }
+//
+//          var imageSelected: ViewGridIMGPicker = .L1{
+//              didSet {
+//                  selectImages(imageSelected)
+//              }
+//          }
+//
+//    let image = image
+//           func selectImages(_ imageSelected: ViewGridIMGPicker) {
+//          switch imageSelected {
+//          case .L1:
+//            viewGridTopLeft.image = self.image
+//          default:
+//              break
+//          }
+//          }
+
 }
