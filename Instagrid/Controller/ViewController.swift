@@ -38,7 +38,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var viewGridBottomLeft: UIImageView!
     @IBOutlet weak var viewGridBottomRight: UIImageView!
     
-    // Outlet collection button View Grid
+    // Outlet add images button View Grid
     @IBOutlet weak var L1: UIButton!
     @IBOutlet weak var L2: UIButton!
     @IBOutlet weak var R1: UIButton!
