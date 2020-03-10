@@ -99,21 +99,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         switch style {
         case .rectangleTop:
             viewGridTopRight.isHidden = true
+            L2.isHidden = true
             viewGridBottomRight.isHidden = false
+            R2.isHidden = false
             buttonRectangleTopImg.setBackgroundImage(UIImage(named: "Layout Selected 1"), for: .normal)
             buttonRectangleBottomImg.setBackgroundImage(UIImage(named: "Layout 2"), for: .normal)
             buttonSquareImg.setBackgroundImage(UIImage(named: "Layout 3"), for: .normal)
           
         case .rectangleBottom:
              viewGridBottomRight.isHidden = true
+             R2.isHidden = true
              viewGridTopRight.isHidden = false
+             L2.isHidden = false
              buttonRectangleTopImg.setBackgroundImage(UIImage(named: "Layout 1"), for: .normal)
              buttonRectangleBottomImg.setBackgroundImage(UIImage(named: "Layout Selected 2"), for: .normal)
              buttonSquareImg.setBackgroundImage(UIImage(named: "Layout 3"), for: .normal)
            
         case .square:
             viewGridTopRight.isHidden = false
+            L2.isHidden = false
             viewGridBottomRight.isHidden = false
+            R2.isHidden = false
             buttonRectangleTopImg.setBackgroundImage(UIImage(named: "Layout 1"), for: .normal)
             buttonRectangleBottomImg.setBackgroundImage(UIImage(named: "Layout 2"), for: .normal)
             buttonSquareImg.setBackgroundImage(UIImage(named: "Layout Selected 3"), for: .normal)
