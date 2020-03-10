@@ -27,6 +27,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Initializes the annimation of the swipe at the first launch of the application.
     self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
     }
+    // A FINIR
+    // Empêcher le swipe si pas de photos
+    // Animations fini réapparition de la grid que si partage finies ou annuler
+    // Animation retour si annuler ??
+    //  ! ALfa pour boutton plus
+    // ! modifier nom des bouttons
+    // ! voir ligne 206
+    // ! créer la doc
+    // ! https://stackoverflow.com/questions/33090477/how-to-perform-action-after-uiactivityviewcontroller-called-and-then-closed
     
     // Outlet label text "Swipe [..] to share"
     @IBOutlet weak var swipeLabel: UILabel!
@@ -46,22 +55,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // Variable d'identification de la vue pour l'image picker
     // View identification variable for image picker
-    var flag = 0
+    var selectedImageView: UIImageView?
     // Action button View Grid
     @IBAction func L1(_ sender: Any) {
-        flag = 1
+        selectedImageView = viewGridTopLeft
         initialImgPicker()
     }
     @IBAction func L2(_ sender: Any) {
-        flag = 2
+        selectedImageView = viewGridTopRight
         initialImgPicker()
     }
     @IBAction func R1(_ sender: Any) {
-        flag = 3
+        selectedImageView = viewGridBottomLeft
         initialImgPicker()
     }
     @IBAction func R2(_ sender: Any) {
-        flag = 4
+        selectedImageView = viewGridBottomRight
         initialImgPicker()
     }
     
@@ -189,7 +198,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                               if success {
                                 self.viewGrid.transform = .identity
                                 self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-                                  UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+                                  UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
                                       self.viewGrid.transform = .identity
                                   })
                               }
@@ -203,6 +212,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                               self.viewGrid.transform = CGAffineTransform(translationX: -screenWidth, y: 0)
                           }, completion: { (success) in
                               if success {
+                                // mettre le shareVG iic
+                                
+                                // prendre ce code et l'ajouter à la fin de l'animation du sharevg avec le code stack de aurélien
+                                // sans oublier de remettre ce code dan une uiview.animate sinon il ne lira pas le .identity
                                 self.viewGrid.transform = .identity
                                 self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
                                 UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
@@ -274,14 +287,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // Function image picker
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            if flag == 1 {
-                viewGridTopLeft.image = image
-            } else if flag == 2 {
-                viewGridTopRight.image = image
-            } else if flag == 3 {
-                viewGridBottomLeft.image = image
-            } else if flag == 4 {
-                viewGridBottomRight.image = image
+            if let selectedImageView = selectedImageView {
+                selectedImageView.image = image
             }
         }
         self.dismiss(animated: true, completion: nil)
