@@ -31,7 +31,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // Empêcher le swipe si pas de photos
     // Animations fini réapparition de la grid que si partage finies ou annuler
     // Animation retour si annuler ??
-    //  ! ALfa pour boutton plus
+    // ! ALfa pour boutton plus
     // ! modifier nom des bouttons
     // ! voir ligne 206
     // ! créer la doc
@@ -48,28 +48,28 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var viewGridBottomRight: UIImageView!
     
     // Outlet add images button View Grid
-    @IBOutlet weak var L1: UIButton!
-    @IBOutlet weak var L2: UIButton!
-    @IBOutlet weak var R1: UIButton!
-    @IBOutlet weak var R2: UIButton!
+    @IBOutlet weak var topLeft: UIButton!
+    @IBOutlet weak var topRight: UIButton!
+    @IBOutlet weak var bottomLeft: UIButton!
+    @IBOutlet weak var bottomRight: UIButton!
     
     // Variable d'identification de la vue pour l'image picker
     // View identification variable for image picker
     var selectedImageView: UIImageView?
     // Action button View Grid
-    @IBAction func L1(_ sender: Any) {
+    @IBAction func topLeft(_ sender: Any) {
         selectedImageView = viewGridTopLeft
         initialImgPicker()
     }
-    @IBAction func L2(_ sender: Any) {
+    @IBAction func topRight(_ sender: Any) {
         selectedImageView = viewGridTopRight
         initialImgPicker()
     }
-    @IBAction func R1(_ sender: Any) {
+    @IBAction func bottomLeft(_ sender: Any) {
         selectedImageView = viewGridBottomLeft
         initialImgPicker()
     }
-    @IBAction func R2(_ sender: Any) {
+    @IBAction func bottomRight(_ sender: Any) {
         selectedImageView = viewGridBottomRight
         initialImgPicker()
     }
@@ -108,30 +108,30 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         switch style {
         case .rectangleTop:
             viewGridTopRight.isHidden = true
-            L2.isHidden = true
+            topRight.isHidden = true
             viewGridBottomRight.isHidden = false
-            R2.isHidden = false
-            buttonRectangleTopImg.setBackgroundImage(UIImage(named: "Layout Selected 1"), for: .normal)
-            buttonRectangleBottomImg.setBackgroundImage(UIImage(named: "Layout 2"), for: .normal)
-            buttonSquareImg.setBackgroundImage(UIImage(named: "Layout 3"), for: .normal)
+            bottomRight.isHidden = false
+            buttonRectangleTopImg.setBackgroundImage(#imageLiteral(resourceName: "Layout Selected 1"), for: .normal)
+            buttonRectangleBottomImg.setBackgroundImage(#imageLiteral(resourceName: "Layout 2"), for: .normal)
+            buttonSquareImg.setBackgroundImage(#imageLiteral(resourceName: "Layout 3"), for: .normal)
           
         case .rectangleBottom:
              viewGridBottomRight.isHidden = true
-             R2.isHidden = true
+             bottomRight.isHidden = true
              viewGridTopRight.isHidden = false
-             L2.isHidden = false
-             buttonRectangleTopImg.setBackgroundImage(UIImage(named: "Layout 1"), for: .normal)
-             buttonRectangleBottomImg.setBackgroundImage(UIImage(named: "Layout Selected 2"), for: .normal)
-             buttonSquareImg.setBackgroundImage(UIImage(named: "Layout 3"), for: .normal)
+             topRight.isHidden = false
+             buttonRectangleTopImg.setBackgroundImage(#imageLiteral(resourceName: "Layout 1"), for: .normal)
+             buttonRectangleBottomImg.setBackgroundImage(#imageLiteral(resourceName: "Layout Selected 2"), for: .normal)
+             buttonSquareImg.setBackgroundImage(#imageLiteral(resourceName: "Layout 3"), for: .normal)
            
         case .square:
             viewGridTopRight.isHidden = false
-            L2.isHidden = false
+            topRight.isHidden = false
             viewGridBottomRight.isHidden = false
-            R2.isHidden = false
-            buttonRectangleTopImg.setBackgroundImage(UIImage(named: "Layout 1"), for: .normal)
-            buttonRectangleBottomImg.setBackgroundImage(UIImage(named: "Layout 2"), for: .normal)
-            buttonSquareImg.setBackgroundImage(UIImage(named: "Layout Selected 3"), for: .normal)
+            bottomRight.isHidden = false
+            buttonRectangleTopImg.setBackgroundImage(#imageLiteral(resourceName: "Layout 1"), for: .normal)
+            buttonRectangleBottomImg.setBackgroundImage(#imageLiteral(resourceName: "Layout 2"), for: .normal)
+            buttonSquareImg.setBackgroundImage(#imageLiteral(resourceName: "Layout Selected 3"), for: .normal)
         }
     }
     
@@ -148,15 +148,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     private func setState(_ buttonState: ButtonVGHid) {
            switch buttonState {
            case .show:
-            L1.isHidden = false
-            L2.isHidden = false
-            R1.isHidden = false
-            R2.isHidden = false
+            topLeft.isHidden = false
+            topRight.isHidden = false
+            bottomLeft.isHidden = false
+            bottomRight.isHidden = false
            case .isHidden:
-            L1.isHidden = true
-            L2.isHidden = true
-            R1.isHidden = true
-            R2.isHidden = true
+            topLeft.isHidden = true
+            topRight.isHidden = true
+            bottomLeft.isHidden = true
+            bottomRight.isHidden = true
         }
     }
     
@@ -196,14 +196,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                               self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -screenHeight)
                           }, completion: { (success) in
                               if success {
-                                self.viewGrid.transform = .identity
-                                self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-                                  UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
-                                      self.viewGrid.transform = .identity
-                                  })
+                                self.shareViewGrid()
                               }
                           })
-                shareVG()
                 
             } else {
                 // Si le device est en mode landscape la vue quitte l'écran par le côté et réapparait au centre de l'écran
@@ -212,7 +207,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                               self.viewGrid.transform = CGAffineTransform(translationX: -screenWidth, y: 0)
                           }, completion: { (success) in
                               if success {
-                                // mettre le shareVG iic
+                                // mettre le shareViewGrid iic
                                 
                                 // prendre ce code et l'ajouter à la fin de l'animation du sharevg avec le code stack de aurélien
                                 // sans oublier de remettre ce code dan une uiview.animate sinon il ne lira pas le .identity
@@ -223,7 +218,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                                   })
                               }
                           })
-                shareVG()
+                shareViewGrid()
 
             }
             
@@ -231,20 +226,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
      }
     
     // Fonction de partage
-    func shareVG(){
+    func shareViewGrid(){
         // Récupération de la viewGrid pour la transformer en image
         UIGraphicsBeginImageContext(viewGrid.frame.size)
         viewGrid.layer.render(in: UIGraphicsGetCurrentContext()!)
-        guard let imageVG = UIGraphicsGetImageFromCurrentImageContext() else {
+        guard let imageViewGrid = UIGraphicsGetImageFromCurrentImageContext() else {
             return
         }
     
         // Début de la séquance de partage
         // On récupère l'image généré pour l'envoyer à l'activity controller
-        let activityViewController = UIActivityViewController(activityItems: [imageVG], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: [imageViewGrid], applicationActivities: nil)
         
         // On ouvre la pop-up
         present(activityViewController, animated: true, completion: nil)
+                                       self.viewGrid.transform = .identity
+                                       self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+                                         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+                                             self.viewGrid.transform = .identity
+                                         })
             buttonState = .show
     }
      
