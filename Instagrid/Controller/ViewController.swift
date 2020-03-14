@@ -31,8 +31,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // Empêcher le swipe si pas de photos
     // Animations fini réapparition de la grid que si partage finies ou annuler
     // Animation retour si annuler ??
-    // ! ALfa pour boutton plus
-    // ! modifier nom des bouttons
+    // ! ALfa pour boutton plus FAIT!
+    // ! modifier nom des bouttons FAIT!
     // ! voir ligne 206
     // ! créer la doc
     // ! https://stackoverflow.com/questions/33090477/how-to-perform-action-after-uiactivityviewcontroller-called-and-then-closed
@@ -182,37 +182,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
         } else if gesture.state == .ended {
             // Once the swipe is finished, depending on the screen orientation, the animation is activated either for the swipe up or for the swipe left.
-            if windowInterfaceOrientation?.isPortrait == true {
-                // If the device is in portrait mode, the view leaves the screen from the top and reappears in the center of the screen.
-                UIView.animate(withDuration: 0.4, animations: {
-                    self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -700)
-                }, completion: { (success) in
-                    if success {
-                        self.shareViewGrid()
-                    }
-                })
-                
-            } else {
-                // If the device is in landscape mode the view leaves the screen from the side and reappears in the center of the screen.
-                UIView.animate(withDuration: 0.4, animations: {
-                    self.viewGrid.transform = CGAffineTransform(translationX: -700, y: 0)
-                }, completion: { (success) in
-                    if success {
-                        // mettre le shareViewGrid iic
-                        
-                        // prendre ce code et l'ajouter à la fin de l'animation du sharevg avec le code stack de aurélien
-                        // sans oublier de remettre ce code dan une uiview.animate sinon il ne lira pas le .identity
-                        self.viewGrid.transform = .identity
-                        self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-                        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
-                            self.viewGrid.transform = .identity
-                        })
-                    }
-                })
-                shareViewGrid()
-                
-            }
-            
+         animateSwipe()
+        } else if gesture.state == .cancelled {
+            self.viewGrid.transform = .identity
         }
     }
     
@@ -301,6 +273,39 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if viewGridBottomRight.image != nil{
             bottomRight.setImage(#imageLiteral(resourceName: "Clear"), for: .normal)
         }
+    }
+    
+    func animateSwipe(){
+    if windowInterfaceOrientation?.isPortrait == true {
+                 // If the device is in portrait mode, the view leaves the screen from the top and reappears in the center of the screen.
+                 UIView.animate(withDuration: 0.4, animations: {
+                     self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -700)
+                 }, completion: { (success) in
+                     if success {
+                         self.shareViewGrid()
+                     }
+                 })
+                 
+             } else {
+                 // If the device is in landscape mode the view leaves the screen from the side and reappears in the center of the screen.
+                 UIView.animate(withDuration: 0.4, animations: {
+                     self.viewGrid.transform = CGAffineTransform(translationX: -700, y: 0)
+                 }, completion: { (success) in
+                     if success {
+                         // mettre le shareViewGrid iic
+                         
+                         // prendre ce code et l'ajouter à la fin de l'animation du sharevg avec le code stack de aurélien
+                         // sans oublier de remettre ce code dan une uiview.animate sinon il ne lira pas le .identity
+                         self.viewGrid.transform = .identity
+                         self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+                         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+                             self.viewGrid.transform = .identity
+                         })
+                     }
+                 })
+                 shareViewGrid()
+                 
+             }
     }
     
     //    func verifyViewsGrid (Views: UIView, ResetStatu: Bool){
