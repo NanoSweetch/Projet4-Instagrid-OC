@@ -12,9 +12,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
-        //Configuring the radius of the grid view
+        //Configuring the radius and shadow of the grid view
         viewGrid.layer.cornerRadius = 15
         viewGrid.layer.shadowRadius = 5
         viewGrid.layer.shadowOpacity = 0.5
@@ -27,15 +26,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Initializes the annimation of the swipe at the first launch of the application.
         self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
     }
-    // A FINIR
-    // Empêcher le swipe si pas de photos
-    // Animations fini réapparition de la grid que si partage finies ou annuler
-    // Animation retour si annuler ??
-    // ! ALfa pour boutton plus FAIT!
-    // ! modifier nom des bouttons FAIT!
-    // ! voir ligne 206
-    // ! créer la doc
-    // ! https://stackoverflow.com/questions/33090477/how-to-perform-action-after-uiactivityviewcontroller-called-and-then-closed
+    
     
     // Outlet label text "Swipe [..] to share"
     @IBOutlet weak var swipeLabel: UILabel!
@@ -47,7 +38,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var viewGridBottomLeft: UIImageView!
     @IBOutlet weak var viewGridBottomRight: UIImageView!
     
-    // Outlet add images button View Grid
+    // Outlet add images Plus on button in views grid
     @IBOutlet weak var topLeft: UIButton!
     @IBOutlet weak var topRight: UIButton!
     @IBOutlet weak var bottomLeft: UIButton!
@@ -56,7 +47,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // Variable d'identification de la vue pour l'image picker
     // View identification variable for image picker
     var selectedImageView: UIImageView?
-    // Action button View Grid
+    // Action buttons views grid
     @IBAction func topLeft(_ sender: Any) {
         selectedImageView = viewGridTopLeft
         initialImgPicker()
@@ -79,15 +70,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var buttonRectangleBottomImg: UIButton!
     @IBOutlet weak var buttonSquareImg: UIButton!
     
-    // Action button
+    // Action Buttons Style
     @IBAction func buttonRectangleTop(_ sender: Any) {
         style = .rectangleTop
+        viewsActive = .rectangleTopVerify
     }
     @IBAction func buttonRectangleBottom(_ sender: Any) {
         style = .rectangleBottom
+        viewsActive = .rectangleBottomVerify
     }
     @IBAction func buttonSquare(_ sender: Any) {
         style = .square
+        viewsActive = .squareVerify
     }
     
     // Configuration des styles et actions des boutons
@@ -135,56 +129,36 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    // Enum permettant de cacher les boutons quand le swip est actif
-    // Enum to hide or show the buttons when the swip is active or not
-    enum ButtonVGHid {
-        case isHidden, show
-    }
-    var buttonState: ButtonVGHid = .show{
-        didSet {
-            setState(buttonState)
-        }
-    }
-    private func setState(_ buttonState: ButtonVGHid) {
-        switch buttonState {
-        case .show:
-            topLeft.isHidden = false
-            topRight.isHidden = false
-            bottomLeft.isHidden = false
-            bottomRight.isHidden = false
-        case .isHidden:
-            topLeft.isHidden = true
-            topRight.isHidden = true
-            bottomLeft.isHidden = true
-            bottomRight.isHidden = true
-        }
-    }
-    
-    // Fonction détection de l'action de swipe
     // Swipe action detection function
     @objc func handlePanGesture(gesture: UIPanGestureRecognizer) {
-         
-        if gesture.state == .began{
-            buttonState = .isHidden
-            // Pour le statut .began rien ne se passe
-            // For the status .began nothing happens
-        } else if gesture.state == .changed {
-            // Le statut changed permet de commencer le déplacement de la vue
-            // The status changed allows you to start moving the view
-            let translation = gesture.translation(in: self.view)
-            // En fonction des conditions d'orientation de l'appareil, le swipe est possible soit à gauche soit en haut
-            // Depending on the orientation of the device, the swipe is possible either to the left or to the top.
-            if windowInterfaceOrientation?.isPortrait == true {
-                viewGrid.transform = CGAffineTransform(translationX: 0, y: translation.y)
-            } else {
-                viewGrid.transform = CGAffineTransform(translationX: translation.x, y: 0)
+        activeVerify()
+        if isOk == true {
+            if gesture.state == .began{
+                
+            } else if gesture.state == .changed {
+                // Le statut changed permet de commencer le déplacement de la vue
+                // The status changed allows you to start moving the view
+                let translation = gesture.translation(in: self.view)
+                // En fonction des conditions d'orientation de l'appareil, le swipe est possible soit à gauche soit en haut
+                // Depending on the orientation of the device, the swipe is possible either to the left or to the top.
+                if windowInterfaceOrientation?.isPortrait == true {
+                    viewGrid.transform = CGAffineTransform(translationX: 0, y: translation.y)
+                } else {
+                    viewGrid.transform = CGAffineTransform(translationX: translation.x, y: 0)
+                }
+                
+            } else if gesture.state == .ended {
+                // Once the swipe is finished, depending on the screen orientation, the animation is activated either for the swipe up or for the swipe left.
+                
+                // AnimateSwipe verifie si toutes les vues ont une image pour lancer l'animation sinon un message d'erreur apparait
+                animateSwipe()
+            } else if gesture.state == .cancelled {
+                self.viewGrid.transform = .identity
             }
-            
-        } else if gesture.state == .ended {
-            // Once the swipe is finished, depending on the screen orientation, the animation is activated either for the swipe up or for the swipe left.
-         animateSwipe()
-        } else if gesture.state == .cancelled {
-            self.viewGrid.transform = .identity
+        } else {
+            let alert = UIAlertController(title: "Incomplete Grid !", message: "Please add images inside the empty frames.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true)
         }
     }
     
@@ -200,15 +174,35 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Début de la séquance de partage
         // On récupère l'image généré pour l'envoyer à l'activity controller
         let activityViewController = UIActivityViewController(activityItems: [imageViewGrid], applicationActivities: nil)
-        
+        activityViewController.completionWithItemsHandler = {
+            (activity, success, items, error) in
+            if success{
+                self.resetAnimate()
+            } else {
+                self.resetAnimate()
+            }
+        }
         // On ouvre la pop-up
         present(activityViewController, animated: true, completion: nil)
+    }
+    
+    func resetAnimate(){
+        // Supprime les images pour repartir de zéro
+        // Deletes images to start from scratch
+        viewGridTopLeft.image = nil
+        viewGridTopRight.image = nil
+        viewGridBottomLeft.image = nil
+        viewGridBottomRight.image = nil
+        
+        // Fait réapparaitre les boutons Plus
+        // Makes the Plus button reappear
+        changeAppearanceButton()
+        
         self.viewGrid.transform = .identity
         self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
             self.viewGrid.transform = .identity
         })
-        buttonState = .show
     }
     
     // Fonction détection de l'orientation
@@ -232,7 +226,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         })
     }
-    
     private var windowInterfaceOrientation: UIInterfaceOrientation? {
         return UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
     }
@@ -259,82 +252,81 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     
-    // Fonction appelé si l'image a ajouter une image, si oui le bouton Plus disparait, mais reste cliquable pour pouvoir modifier l'image
+    // Fonction appelée si l'image a ajouté une image, si oui le bouton Plus disparait, mais reste cliquable pour pouvoir modifier l'image, sinon l'image Plus apparait
+    // Function called if the image has added an image, if yes the More button disappears, but remains clickable to be able to modify the image, otherwise the More image appears
     func changeAppearanceButton(){
         if viewGridTopLeft.image != nil{
             topLeft.setImage(#imageLiteral(resourceName: "Clear"), for: .normal)
+        } else {
+            topLeft.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
         }
         if viewGridTopRight.image != nil{
             topRight.setImage(#imageLiteral(resourceName: "Clear"), for: .normal)
+        } else {
+            topRight.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
         }
         if viewGridBottomLeft.image != nil{
             bottomLeft.setImage(#imageLiteral(resourceName: "Clear"), for: .normal)
+        } else {
+            bottomLeft.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
         }
         if viewGridBottomRight.image != nil{
             bottomRight.setImage(#imageLiteral(resourceName: "Clear"), for: .normal)
+        } else {
+            bottomRight.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
         }
     }
     
     func animateSwipe(){
-    if windowInterfaceOrientation?.isPortrait == true {
-                 // If the device is in portrait mode, the view leaves the screen from the top and reappears in the center of the screen.
-                 UIView.animate(withDuration: 0.4, animations: {
-                     self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -700)
-                 }, completion: { (success) in
-                     if success {
-                         self.shareViewGrid()
-                     }
-                 })
-                 
-             } else {
-                 // If the device is in landscape mode the view leaves the screen from the side and reappears in the center of the screen.
-                 UIView.animate(withDuration: 0.4, animations: {
-                     self.viewGrid.transform = CGAffineTransform(translationX: -700, y: 0)
-                 }, completion: { (success) in
-                     if success {
-                         // mettre le shareViewGrid iic
-                         
-                         // prendre ce code et l'ajouter à la fin de l'animation du sharevg avec le code stack de aurélien
-                         // sans oublier de remettre ce code dan une uiview.animate sinon il ne lira pas le .identity
-                         self.viewGrid.transform = .identity
-                         self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-                         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
-                             self.viewGrid.transform = .identity
-                         })
-                     }
-                 })
-                 shareViewGrid()
-                 
-             }
+        if windowInterfaceOrientation?.isPortrait == true {
+            // If the device is in portrait mode, the view leaves the screen from the top and reappears in the center of the screen.
+            UIView.animate(withDuration: 0.4, animations: {
+                self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -700)
+            }, completion: { (success) in
+                if success {
+                    self.shareViewGrid()
+                }
+            })
+        } else {
+            // If the device is in landscape mode the view leaves the screen from the side and reappears in the center of the screen.
+            UIView.animate(withDuration: 0.4, animations: {
+                self.viewGrid.transform = CGAffineTransform(translationX: -700, y: 0)
+            }, completion: { (success) in
+                if success {
+                    self.shareViewGrid()
+                }
+            })
+        }
     }
     
-    //    func verifyViewsGrid (Views: UIView, ResetStatu: Bool){
-    //        if let ResetStatu = true {
-    //
-    //        }
-    //    }
+    // Vérification du statut des vues. Si toutes les vues sont non nil alors la var isOK passe à True et permet de déclencher la fonction swipe.
+    // Checking the status of the views. If all views are non nil then the var isOK changes to True and triggers the swipe function.
+    enum VerifyViewGrid {
+        case rectangleTopVerify, rectangleBottomVerify, squareVerify
+    }
+    var viewsActive: VerifyViewGrid = .squareVerify
     
-    // Peut éventuellement servir pour vérifier si les image view sont vides afin d’empêcher le swipe tant qu’elles ne seront pas remplies
-    
-    //self.imageSelected = .L1
-    //   enum ViewGridIMGPicker {
-    //              case L1
-    //          }
-    //
-    //          var imageSelected: ViewGridIMGPicker = .L1{
-    //              didSet {
-    //                  selectImages(imageSelected)
-    //              }
-    //          }
-    //
-    //    let image = image
-    //           func selectImages(_ imageSelected: ViewGridIMGPicker) {
-    //          switch imageSelected {
-    //          case .L1:
-    //            viewGridTopLeft.image = self.image
-    //          default:
-    //              break
-    //          }
-    //          }
-    
+    var isOk = false
+    private func activeVerify() {
+        switch viewsActive {
+        case .rectangleTopVerify:
+            if viewGridTopLeft.image != nil && viewGridBottomLeft.image != nil && viewGridBottomRight.image != nil {
+                isOk = true
+            } else {
+                isOk = false
+            }
+        case .rectangleBottomVerify:
+            if viewGridTopLeft.image != nil && viewGridTopRight.image != nil && viewGridBottomLeft.image != nil {
+                isOk = true
+            } else {
+                isOk = false
+            }
+        case .squareVerify:
+            if viewGridTopLeft.image != nil && viewGridTopRight.image != nil && viewGridBottomLeft.image != nil && viewGridBottomRight.image != nil {
+                isOk = true
+            } else {
+                isOk = false
+            }
+        }
+    }
 }
