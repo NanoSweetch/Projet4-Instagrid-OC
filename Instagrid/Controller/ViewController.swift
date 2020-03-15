@@ -12,9 +12,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
-        //Configuring the radius of the grid view
+        //Configuring the radius and shadow of the grid view
         viewGrid.layer.cornerRadius = 15
         viewGrid.layer.shadowRadius = 5
         viewGrid.layer.shadowOpacity = 0.5
@@ -141,15 +140,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // Enum permettant de cacher les boutons quand le swip est actif
     // Enum to hide or show the buttons when the swip is active or not
-    enum ButtonVGHid {
+    enum ButtonVGrid {
         case isHidden, show
     }
-    var buttonState: ButtonVGHid = .show{
+    var buttonState: ButtonVGrid = .show{
         didSet {
             setState(buttonState)
         }
     }
-    private func setState(_ buttonState: ButtonVGHid) {
+    private func setState(_ buttonState: ButtonVGrid) {
         switch buttonState {
         case .show:
             topLeft.isHidden = false
