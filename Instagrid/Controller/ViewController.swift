@@ -27,6 +27,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
     }
     
+    
     // Outlet label text "Swipe [..] to share"
     @IBOutlet weak var swipeLabel: UILabel!
     
