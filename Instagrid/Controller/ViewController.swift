@@ -28,7 +28,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
     }
     // A FINIR
-    // Empêcher le swipe si pas de photos
+    // Empêcher le swipe si pas de photos FAIT!
     // Animations fini réapparition de la grid que si partage finies ou annuler
     // Animation retour si annuler ??
     // ! ALfa pour boutton plus FAIT!
@@ -192,7 +192,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.viewGrid.transform = .identity
         }
         } else {
-            print("ajoute des images")
+            let alert = UIAlertController(title: "Incomplete Grid !", message: "Please add images inside the empty frames.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true)
         }
     }
     
