@@ -82,13 +82,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // Action button
     @IBAction func buttonRectangleTop(_ sender: Any) {
         style = .rectangleTop
+        viewsActive = .rectangleTopVerify
     }
     @IBAction func buttonRectangleBottom(_ sender: Any) {
         style = .rectangleBottom
+        viewsActive = .rectangleBottomVerify
     }
     @IBAction func buttonSquare(_ sender: Any) {
         style = .square
+        viewsActive = .squareVerify
     }
+    
     
     // Configuration des styles et actions des boutons
     // Configuring Button Styles and Actions
@@ -163,7 +167,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // Fonction détection de l'action de swipe
     // Swipe action detection function
     @objc func handlePanGesture(gesture: UIPanGestureRecognizer) {
-         
+        activeVerify()
+        if isOk == true {
         if gesture.state == .began{
             buttonState = .isHidden
             // Pour le statut .began rien ne se passe
@@ -186,7 +191,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         } else if gesture.state == .cancelled {
             self.viewGrid.transform = .identity
         }
+        } else {
+            print("ajoute des images")
+        }
     }
+    
+    
     
     // Fonction de partage
     func shareViewGrid(){
@@ -308,33 +318,32 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
              }
     }
     
-    //    func verifyViewsGrid (Views: UIView, ResetStatu: Bool){
-    //        if let ResetStatu = true {
-    //
-    //        }
-    //    }
+    enum VerifyViewGrid {
+        case rectangleTopVerify, rectangleBottomVerify, squareVerify
+    }
+    var viewsActive: VerifyViewGrid = .squareVerify
     
-    // Peut éventuellement servir pour vérifier si les image view sont vides afin d’empêcher le swipe tant qu’elles ne seront pas remplies
-    
-    //self.imageSelected = .L1
-    //   enum ViewGridIMGPicker {
-    //              case L1
-    //          }
-    //
-    //          var imageSelected: ViewGridIMGPicker = .L1{
-    //              didSet {
-    //                  selectImages(imageSelected)
-    //              }
-    //          }
-    //
-    //    let image = image
-    //           func selectImages(_ imageSelected: ViewGridIMGPicker) {
-    //          switch imageSelected {
-    //          case .L1:
-    //            viewGridTopLeft.image = self.image
-    //          default:
-    //              break
-    //          }
-    //          }
-    
+    var isOk = false
+    private func activeVerify() {
+        switch viewsActive {
+        case .rectangleTopVerify:
+            if viewGridTopLeft.image != nil && viewGridBottomLeft.image != nil && viewGridBottomRight.image != nil {
+                isOk = true
+            } else {
+                isOk = false
+            }
+        case .rectangleBottomVerify:
+            if viewGridTopLeft.image != nil && viewGridTopRight.image != nil && viewGridBottomLeft.image != nil {
+                isOk = true
+            } else {
+                isOk = false
+            }
+        case .squareVerify:
+            if viewGridTopLeft.image != nil && viewGridTopRight.image != nil && viewGridBottomLeft.image != nil && viewGridBottomRight.image != nil {
+                isOk = true
+            } else {
+                isOk = false
+            }
+        }
+    }
 }
