@@ -27,7 +27,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
     }
     
-    
+    /// Outlets & Actions
     // Outlet label text "Swipe [..] to share"
     @IBOutlet weak var swipeLabel: UILabel!
     
@@ -83,20 +83,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         style = .square
         viewsActive = .squareVerify
     }
-    
+
+    /// Configuring Button Styles and Actions
     // Configuration des styles et actions des boutons
-    // Configuring Button Styles and Actions
     enum StyleGrid {
         case rectangleTop, rectangleBottom, square
     }
-    
     var style: StyleGrid = .rectangleBottom{
         didSet {
             setStyle(style)
         }
     }
-    
-    // En fonction du bouton sélectionné on cache une vue ou on les affiche et l'image du bouton est modifié
+    // En fonction du bouton sélectionné, on cache une vue ou on les affiche et l'image du bouton est modifiée
     // Depending on the selected button, a frame is hidden or displayed and the button image is changed.
     private func setStyle(_ style: StyleGrid) {
         switch style {
@@ -108,7 +106,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             buttonRectangleTopImg.setBackgroundImage(#imageLiteral(resourceName: "Layout Selected 1"), for: .normal)
             buttonRectangleBottomImg.setBackgroundImage(#imageLiteral(resourceName: "Layout 2"), for: .normal)
             buttonSquareImg.setBackgroundImage(#imageLiteral(resourceName: "Layout 3"), for: .normal)
-            
         case .rectangleBottom:
             viewGridBottomRight.isHidden = true
             bottomRight.isHidden = true
@@ -117,7 +114,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             buttonRectangleTopImg.setBackgroundImage(#imageLiteral(resourceName: "Layout 1"), for: .normal)
             buttonRectangleBottomImg.setBackgroundImage(#imageLiteral(resourceName: "Layout Selected 2"), for: .normal)
             buttonSquareImg.setBackgroundImage(#imageLiteral(resourceName: "Layout 3"), for: .normal)
-            
         case .square:
             viewGridTopRight.isHidden = false
             topRight.isHidden = false
@@ -129,12 +125,38 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    // Swipe action detection function
+      /// Orientation detection function
+      // Fonction détection de l'orientation
+      override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+          super.willTransition(to: newCollection, with: coordinator)
+          coordinator.animate(alongsideTransition: { (context) in
+              guard let windowInterfaceOrientation = self.windowInterfaceOrientation else { return }
+              
+              // Si l'appareil est en landscape le label change et le swipe aussi et inversement en portrait
+              // If the device is in landscape the label changes and the swipe as well and vice versa with portrait.
+              if windowInterfaceOrientation.isLandscape {
+                  // activate landscape changes
+                  self.swipeLabel.text = "Swipe left to share"
+                  self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
+              } else {
+                  // activate portrait changes
+                  self.swipeLabel.text = "Swipe up to share"
+                  self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
+              }
+          })
+      }
+      private var windowInterfaceOrientation: UIInterfaceOrientation? {
+          return UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
+      }
+    
+    /// Swipe action detection function
+    // Fonction de détection de l'action swipe
     @objc func handlePanGesture(gesture: UIPanGestureRecognizer) {
+        // Fonction activeVerify est appelé pour vérifier le statut de isOK
         activeVerify()
         if isOk == true {
             if gesture.state == .began{
-                
+                // Start of detection
             } else if gesture.state == .changed {
                 // Le statut changed permet de commencer le déplacement de la vue
                 // The status changed allows you to start moving the view
@@ -146,7 +168,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 } else {
                     viewGrid.transform = CGAffineTransform(translationX: translation.x, y: 0)
                 }
-                
             } else if gesture.state == .ended {
                 // Once the swipe is finished, depending on the screen orientation, the animation is activated either for the swipe up or for the swipe left.
                 
@@ -162,6 +183,31 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+    /// Animation function that makes the screen view disappear
+    // Fonction d'animation qui fait disparaitre la vue de l'écran
+    func animateSwipe(){
+        if windowInterfaceOrientation?.isPortrait == true {
+            // If the device is in portrait mode, the view leaves the screen from the top and reappears in the center of the screen.
+            UIView.animate(withDuration: 0.4, animations: {
+                self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -700)
+            }, completion: { (success) in
+                if success {
+                    self.shareViewGrid()
+                }
+            })
+        } else {
+            // If the device is in landscape mode the view leaves the screen from the side and reappears in the center of the screen.
+            UIView.animate(withDuration: 0.4, animations: {
+                self.viewGrid.transform = CGAffineTransform(translationX: -700, y: 0)
+            }, completion: { (success) in
+                if success {
+                    self.shareViewGrid()
+                }
+            })
+        }
+    }
+    
+    /// Sharing function
     // Fonction de partage
     func shareViewGrid(){
         // Récupération de la viewGrid pour la transformer en image
@@ -182,7 +228,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.resetAnimate()
             }
         }
-        // On ouvre la pop-up
+        // On ouvre la pop-up de partage, puis si annulée ou complété on réinitialise les vues avec resetAnimate
         present(activityViewController, animated: true, completion: nil)
     }
     
@@ -197,37 +243,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Fait réapparaitre les boutons Plus
         // Makes the Plus button reappear
         changeAppearanceButton()
-        
+        // Lancement de l'animation du retour de la vue à l'écran
         self.viewGrid.transform = .identity
         self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
             self.viewGrid.transform = .identity
         })
-    }
-    
-    // Fonction détection de l'orientation
-    // Orientation detection function
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        
-        coordinator.animate(alongsideTransition: { (context) in
-            guard let windowInterfaceOrientation = self.windowInterfaceOrientation else { return }
-            
-            // Si l'appareil est en landscape le label change et le swipe aussi et inversement avec else
-            // If the device is in landscape the label changes and the swipe as well and vice versa with else.
-            if windowInterfaceOrientation.isLandscape {
-                // activate landscape changes
-                self.swipeLabel.text = "Swipe left to share"
-                self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
-            } else {
-                // activate portrait changes
-                self.swipeLabel.text = "Swipe up to share"
-                self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
-            }
-        })
-    }
-    private var windowInterfaceOrientation: UIInterfaceOrientation? {
-        return UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
     }
     
     // Fonction d'initialisation de l'image picker pour les boutons d'ajout d'image de la VG
@@ -240,7 +261,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.present(image, animated: true)
     }
     
-    // Function image picker
+    /// Function image picker
+    // Fonction d'ajout d'une photo depuis la galerie vers la view grid
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             if let selectedImageView = selectedImageView {
@@ -251,9 +273,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         changeAppearanceButton()
     }
     
-    
-    // Fonction appelée si l'image a ajouté une image, si oui le bouton Plus disparait, mais reste cliquable pour pouvoir modifier l'image, sinon l'image Plus apparait
-    // Function called if the image has added an image, if yes the More button disappears, but remains clickable to be able to modify the image, otherwise the More image appears
+    /// Function disappearance and appearance of the Plus button called if the image has added an image, if yes the More button disappears, but remains clickable to be able to modify the image, otherwise the More image appears
+    // Fonction de disparition et apparition du bouton Plus appelée si l'image a ajouté une image, si oui le bouton Plus disparait, mais reste cliquable pour pouvoir modifier l'image, sinon l'image Plus apparait
     func changeAppearanceButton(){
         if viewGridTopLeft.image != nil{
             topLeft.setImage(#imageLiteral(resourceName: "Clear"), for: .normal)
@@ -274,28 +295,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             bottomRight.setImage(#imageLiteral(resourceName: "Clear"), for: .normal)
         } else {
             bottomRight.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
-        }
-    }
-    
-    func animateSwipe(){
-        if windowInterfaceOrientation?.isPortrait == true {
-            // If the device is in portrait mode, the view leaves the screen from the top and reappears in the center of the screen.
-            UIView.animate(withDuration: 0.4, animations: {
-                self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -700)
-            }, completion: { (success) in
-                if success {
-                    self.shareViewGrid()
-                }
-            })
-        } else {
-            // If the device is in landscape mode the view leaves the screen from the side and reappears in the center of the screen.
-            UIView.animate(withDuration: 0.4, animations: {
-                self.viewGrid.transform = CGAffineTransform(translationX: -700, y: 0)
-            }, completion: { (success) in
-                if success {
-                    self.shareViewGrid()
-                }
-            })
         }
     }
     
