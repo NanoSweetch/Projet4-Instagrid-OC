@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		5258BA7A24085A4A003736A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258BA7924085A4A003736A4 /* AppDelegate.swift */; };
 		5258BA7C24085A4A003736A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258BA7B24085A4A003736A4 /* SceneDelegate.swift */; };
-		5258BA7E24085A4A003736A4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258BA7D24085A4A003736A4 /* ViewController.swift */; };
+		5258BA7E24085A4A003736A4 /* ViewGridController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258BA7D24085A4A003736A4 /* ViewGridController.swift */; };
 		5258BA8124085A4A003736A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5258BA7F24085A4A003736A4 /* Main.storyboard */; };
 		5258BA8324085A4C003736A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5258BA8224085A4C003736A4 /* Assets.xcassets */; };
 		5258BA8624085A4C003736A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5258BA8424085A4C003736A4 /* LaunchScreen.storyboard */; };
@@ -21,7 +21,7 @@
 		5258BA7624085A4A003736A4 /* Instagrid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagrid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5258BA7924085A4A003736A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5258BA7B24085A4A003736A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		5258BA7D24085A4A003736A4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5258BA7D24085A4A003736A4 /* ViewGridController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGridController.swift; sourceTree = "<group>"; };
 		5258BA8024085A4A003736A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5258BA8224085A4C003736A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5258BA8524085A4C003736A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -60,7 +60,6 @@
 		5258BA7824085A4A003736A4 /* Instagrid */ = {
 			isa = PBXGroup;
 			children = (
-				F6304FE6240FDEBE00B31E7C /* Model */,
 				F6304FE7240FDECA00B31E7C /* View */,
 				F6304FE9240FDEE400B31E7C /* Controller */,
 				5258BA7924085A4A003736A4 /* AppDelegate.swift */,
@@ -74,13 +73,6 @@
 			path = Instagrid;
 			sourceTree = "<group>";
 		};
-		F6304FE6240FDEBE00B31E7C /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		F6304FE7240FDECA00B31E7C /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -92,7 +84,7 @@
 		F6304FE9240FDEE400B31E7C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				5258BA7D24085A4A003736A4 /* ViewController.swift */,
+				5258BA7D24085A4A003736A4 /* ViewGridController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -170,7 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5258BA7E24085A4A003736A4 /* ViewController.swift in Sources */,
+				5258BA7E24085A4A003736A4 /* ViewGridController.swift in Sources */,
 				5258BA7A24085A4A003736A4 /* AppDelegate.swift in Sources */,
 				5258BA7C24085A4A003736A4 /* SceneDelegate.swift in Sources */,
 			);
