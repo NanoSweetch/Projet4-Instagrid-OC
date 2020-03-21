@@ -8,56 +8,6 @@
 
 import UIKit
 
-extension ViewController: UIImagePickerControllerDelegate {
-    // MARK: - UIImagePickerController
-    
-    // Fonction d'ajout d'une photo depuis la galerie vers la view grid
-    /// Function image picker
-    /// - Parameters:
-    ///   - picker: Call the UIImagePickerController
-    ///   - info: Retrieves information from the selected image
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            if let selectedImageView = selectedImageView {
-                selectedImageView.image = image
-            }
-        }
-        self.dismiss(animated: true, completion: nil)
-        changeAppearanceButton()
-    }
-}
-
-extension ViewController: UINavigationControllerDelegate {
-    // MARK: - UINavigationController
-    
-    // Fonction détection de l'orientation
-    /// Orientation detection function
-    /// - Parameters:
-    ///   - newCollection: Detects a change in orientation based on the screen size.
-    ///   - coordinator: Call UIViewControllerTransitionCoordinator
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        coordinator.animate(alongsideTransition: { (context) in
-            guard let windowInterfaceOrientation = self.windowInterfaceOrientation else { return }
-            
-            // Si l'appareil est en landscape le label change et le swipe aussi et inversement en portrait
-            // If the device is in landscape the label changes and the swipe as well and vice versa with portrait.
-            if windowInterfaceOrientation.isLandscape {
-                // activate landscape changes
-                self.swipeLabel.text = "Swipe left to share"
-                self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
-            } else {
-                // activate portrait changes
-                self.swipeLabel.text = "Swipe up to share"
-                self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
-            }
-        })
-    }
-    private var windowInterfaceOrientation: UIInterfaceOrientation? {
-        return UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
-    }
-}
-
 class ViewController: UIViewController {
     
     override func viewDidLoad() {
@@ -179,14 +129,14 @@ class ViewController: UIViewController {
     
     // Variable d'identification de la vue pour l'image picker
     // View identification variable for image picker
-    private var selectedImageView: UIImageView?
+    var selectedImageView: UIImageView?
     
     // MARK: - Swipe detection function
     
     // Fonction de détection de l'action swipe
     /// Swipe action detection function
     /// - Parameter gesture: Use UIPanGestureRecognizer
-    @objc private func handlePanGesture(gesture: UIPanGestureRecognizer) {
+    @objc func handlePanGesture(gesture: UIPanGestureRecognizer) {
         // Fonction activeVerify est appelé pour vérifier le statut de isOK
         activeViewStatusCheck()
         if statusCheckForSwipe == true {
@@ -297,7 +247,7 @@ class ViewController: UIViewController {
     /// Image picker initialization function for the VG's add image buttons
     private func initialImgPicker() {
         let image = UIImagePickerController()
-        image.delegate = self
+        image.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
         image.sourceType = .photoLibrary
         image.allowsEditing = false
         self.present(image, animated: true)
@@ -307,7 +257,7 @@ class ViewController: UIViewController {
     
     // Fonction de disparition et apparition du bouton Plus appelée si l'image a ajouté une image, si oui le bouton Plus disparait, mais reste cliquable pour pouvoir modifier l'image, sinon l'image Plus apparait
     /// Changes the appearance of the views when an image is added
-    private func changeAppearanceButton(){
+     func changeAppearanceButton(){
         viewGridTopLeft.image != nil ? topLeft.setImage(#imageLiteral(resourceName: "Clear"), for: .normal) : topLeft.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
         viewGridTopRight.image != nil ? topRight.setImage(#imageLiteral(resourceName: "Clear"), for: .normal) : topRight.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
         viewGridBottomLeft.image != nil ? bottomLeft.setImage(#imageLiteral(resourceName: "Clear"), for: .normal) : bottomLeft.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
