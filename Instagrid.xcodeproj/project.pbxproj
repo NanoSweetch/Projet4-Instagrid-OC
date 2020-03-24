@@ -15,8 +15,8 @@
 		5258BA8624085A4C003736A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5258BA8424085A4C003736A4 /* LaunchScreen.storyboard */; };
 		F6304FE4240FDE1A00B31E7C /* ThirstySoftRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F6304FE2240FDE1A00B31E7C /* ThirstySoftRegular.otf */; };
 		F6304FE5240FDE1A00B31E7C /* Delm-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F6304FE3240FDE1A00B31E7C /* Delm-Medium.otf */; };
-		F658421C242694960015C565 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658421B242694960015C565 /* ImagePicker.swift */; };
-		F658421E2426956A0015C565 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658421D2426956A0015C565 /* NavigationController.swift */; };
+		F658421C242694960015C565 /* ViewGridController+ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658421B242694960015C565 /* ViewGridController+ImagePicker.swift */; };
+		F658421E2426956A0015C565 /* ViewGridController+NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658421D2426956A0015C565 /* ViewGridController+NavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,8 +30,8 @@
 		5258BA8724085A4C003736A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6304FE2240FDE1A00B31E7C /* ThirstySoftRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThirstySoftRegular.otf; sourceTree = "<group>"; };
 		F6304FE3240FDE1A00B31E7C /* Delm-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Delm-Medium.otf"; sourceTree = "<group>"; };
-		F658421B242694960015C565 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		F658421D2426956A0015C565 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		F658421B242694960015C565 /* ViewGridController+ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewGridController+ImagePicker.swift"; sourceTree = "<group>"; };
+		F658421D2426956A0015C565 /* ViewGridController+NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewGridController+NavigationController.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,12 +64,12 @@
 		5258BA7824085A4A003736A4 /* Instagrid */ = {
 			isa = PBXGroup;
 			children = (
-				F6304FE7240FDECA00B31E7C /* View */,
 				F6304FE9240FDEE400B31E7C /* Controller */,
 				5258BA7924085A4A003736A4 /* AppDelegate.swift */,
 				5258BA7B24085A4A003736A4 /* SceneDelegate.swift */,
 				5258BA8224085A4C003736A4 /* Assets.xcassets */,
 				5258BA8424085A4C003736A4 /* LaunchScreen.storyboard */,
+				5258BA7F24085A4A003736A4 /* Main.storyboard */,
 				5258BA8724085A4C003736A4 /* Info.plist */,
 				F6304FE3240FDE1A00B31E7C /* Delm-Medium.otf */,
 				F6304FE2240FDE1A00B31E7C /* ThirstySoftRegular.otf */,
@@ -77,20 +77,12 @@
 			path = Instagrid;
 			sourceTree = "<group>";
 		};
-		F6304FE7240FDECA00B31E7C /* View */ = {
-			isa = PBXGroup;
-			children = (
-				5258BA7F24085A4A003736A4 /* Main.storyboard */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		F6304FE9240FDEE400B31E7C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				5258BA7D24085A4A003736A4 /* ViewGridController.swift */,
-				F658421B242694960015C565 /* ImagePicker.swift */,
-				F658421D2426956A0015C565 /* NavigationController.swift */,
+				F658421B242694960015C565 /* ViewGridController+ImagePicker.swift */,
+				F658421D2426956A0015C565 /* ViewGridController+NavigationController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -169,8 +161,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5258BA7E24085A4A003736A4 /* ViewGridController.swift in Sources */,
-				F658421C242694960015C565 /* ImagePicker.swift in Sources */,
-				F658421E2426956A0015C565 /* NavigationController.swift in Sources */,
+				F658421C242694960015C565 /* ViewGridController+ImagePicker.swift in Sources */,
+				F658421E2426956A0015C565 /* ViewGridController+NavigationController.swift in Sources */,
 				5258BA7A24085A4A003736A4 /* AppDelegate.swift in Sources */,
 				5258BA7C24085A4A003736A4 /* SceneDelegate.swift in Sources */,
 			);

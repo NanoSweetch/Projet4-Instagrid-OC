@@ -8,7 +8,54 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewGridController: UIViewController {
+    
+    // MARK: - IBOutlets
+    
+    // Outlet for label text "Swipe [..] to share"
+    @IBOutlet weak var swipeLabel: UILabel!
+    
+    // Outlets View Grid
+    @IBOutlet weak var viewGrid: UIView!
+    @IBOutlet weak var viewGridTopLeft: UIImageView!
+    @IBOutlet weak var viewGridTopRight: UIImageView!
+    @IBOutlet weak var viewGridBottomLeft: UIImageView!
+    @IBOutlet weak var viewGridBottomRight: UIImageView!
+    
+    // Outlet add images Plus on button in views grid
+    @IBOutlet weak var topLeft: UIButton!
+    @IBOutlet weak var topRight: UIButton!
+    @IBOutlet weak var bottomLeft: UIButton!
+    @IBOutlet weak var bottomRight: UIButton!
+    
+    // Outlets Buttons Style
+    @IBOutlet weak var buttonRectangleTopImg: UIButton!
+    @IBOutlet weak var buttonRectangleBottomImg: UIButton!
+    @IBOutlet weak var buttonSquareImg: UIButton!
+    
+    // Variable d'identification de la vue pour l'image picker
+    // View identification variable for image picker
+    var selectedImageView: UIImageView?
+    
+    private var viewsActive: VerifyViewGrid = .squareVerify
+    
+    private var statusCheckForSwipe = false
+    
+    private var style: StyleGrid = .rectangleBottom{
+        didSet {
+            setStyle(style)
+        }
+    }
+    
+    enum VerifyViewGrid {
+        case rectangleTopVerify, rectangleBottomVerify, squareVerify
+    }
+    
+    /// Configuring Button Styles and Actions
+    // Configuration des styles et actions des boutons
+    enum StyleGrid {
+        case rectangleTop, rectangleBottom, square
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,22 +77,22 @@ class ViewController: UIViewController {
     // MARK: - IBAction functions
     
     // Action buttons views grid
-     @IBAction func topLeft(_ sender: Any) {
-         selectedImageView = viewGridTopLeft
-         initialImgPicker()
-     }
-     @IBAction func topRight(_ sender: Any) {
-         selectedImageView = viewGridTopRight
-         initialImgPicker()
-     }
-     @IBAction func bottomLeft(_ sender: Any) {
-         selectedImageView = viewGridBottomLeft
-         initialImgPicker()
-     }
-     @IBAction func bottomRight(_ sender: Any) {
-         selectedImageView = viewGridBottomRight
-         initialImgPicker()
-     }
+    @IBAction func topLeft(_ sender: Any) {
+        selectedImageView = viewGridTopLeft
+        initialImgPicker()
+    }
+    @IBAction func topRight(_ sender: Any) {
+        selectedImageView = viewGridTopRight
+        initialImgPicker()
+    }
+    @IBAction func bottomLeft(_ sender: Any) {
+        selectedImageView = viewGridBottomLeft
+        initialImgPicker()
+    }
+    @IBAction func bottomRight(_ sender: Any) {
+        selectedImageView = viewGridBottomRight
+        initialImgPicker()
+    }
     
     // Action Buttons Style
     @IBAction func buttonRectangleTop(_ sender: Any) {
@@ -59,17 +106,6 @@ class ViewController: UIViewController {
     @IBAction func buttonSquare(_ sender: Any) {
         style = .square
         viewsActive = .squareVerify
-    }
-
-    /// Configuring Button Styles and Actions
-    // Configuration des styles et actions des boutons
-    enum StyleGrid {
-        case rectangleTop, rectangleBottom, square
-    }
-    private var style: StyleGrid = .rectangleBottom{
-        didSet {
-            setStyle(style)
-        }
     }
     
     // Depending on the selected button, a frame is hidden or displayed and the button image is changed.
@@ -103,33 +139,6 @@ class ViewController: UIViewController {
             buttonSquareImg.setBackgroundImage(#imageLiteral(resourceName: "Layout Selected 3"), for: .normal)
         }
     }
-    
-    // MARK: - IBOutlets
-
-    // Outlet for label text "Swipe [..] to share"
-    @IBOutlet weak var swipeLabel: UILabel!
-    
-    // Outlets View Grid
-    @IBOutlet weak var viewGrid: UIView!
-    @IBOutlet weak var viewGridTopLeft: UIImageView!
-    @IBOutlet weak var viewGridTopRight: UIImageView!
-    @IBOutlet weak var viewGridBottomLeft: UIImageView!
-    @IBOutlet weak var viewGridBottomRight: UIImageView!
-    
-    // Outlet add images Plus on button in views grid
-    @IBOutlet weak var topLeft: UIButton!
-    @IBOutlet weak var topRight: UIButton!
-    @IBOutlet weak var bottomLeft: UIButton!
-    @IBOutlet weak var bottomRight: UIButton!
-    
-    // Outlets Buttons Style
-    @IBOutlet weak var buttonRectangleTopImg: UIButton!
-    @IBOutlet weak var buttonRectangleBottomImg: UIButton!
-    @IBOutlet weak var buttonSquareImg: UIButton!
-    
-    // Variable d'identification de la vue pour l'image picker
-    // View identification variable for image picker
-    var selectedImageView: UIImageView?
     
     // MARK: - Swipe detection function
     
@@ -257,7 +266,7 @@ class ViewController: UIViewController {
     
     // Fonction de disparition et apparition du bouton Plus appelée si l'image a ajouté une image, si oui le bouton Plus disparait, mais reste cliquable pour pouvoir modifier l'image, sinon l'image Plus apparait
     /// Changes the appearance of the views when an image is added
-     func changeAppearanceButton(){
+    func changeAppearanceButton(){
         viewGridTopLeft.image != nil ? topLeft.setImage(#imageLiteral(resourceName: "Clear"), for: .normal) : topLeft.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
         viewGridTopRight.image != nil ? topRight.setImage(#imageLiteral(resourceName: "Clear"), for: .normal) : topRight.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
         viewGridBottomLeft.image != nil ? bottomLeft.setImage(#imageLiteral(resourceName: "Clear"), for: .normal) : bottomLeft.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
@@ -268,12 +277,6 @@ class ViewController: UIViewController {
     
     // Vérification du statut des vues. Si toutes les vues sont non nil alors la var isOK passe à True et permet de déclencher la fonction swipe.
     /// Checks the status of the views to allow swipe activation if the conditions are met
-    enum VerifyViewGrid {
-        case rectangleTopVerify, rectangleBottomVerify, squareVerify
-    }
-    private var viewsActive: VerifyViewGrid = .squareVerify
-    
-    private var statusCheckForSwipe = false
     private func activeViewStatusCheck() {
         switch viewsActive {
         case .rectangleTopVerify:

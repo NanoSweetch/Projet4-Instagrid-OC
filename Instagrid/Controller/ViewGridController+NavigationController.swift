@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension ViewController: UINavigationControllerDelegate {
+extension ViewGridController: UINavigationControllerDelegate {
     // MARK: - UINavigationController
     
     // Fonction détection de l'orientation
