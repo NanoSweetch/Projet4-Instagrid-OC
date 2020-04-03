@@ -148,12 +148,15 @@ class ViewGridController: UIViewController {
     @objc func handlePanGesture(gesture: UIPanGestureRecognizer) {
         // Fonction activeVerify est appelé pour vérifier le statut de isOK
         activeViewStatusCheck()
+        // Si statusCheckForSwipe == true alors le handleGesture est accessible
         if statusCheckForSwipe == true {
             if gesture.state == .began{
                 // Start of detection
             } else if gesture.state == .changed {
                 // Le statut changed permet de commencer le déplacement de la vue
                 // The status changed allows you to start moving the view
+                
+                // let translation avec un gesture.translation permet le déplacement de la vue
                 let translation = gesture.translation(in: self.view)
                 // En fonction des conditions d'orientation de l'appareil, le swipe est possible soit à gauche soit en haut
                 // Depending on the orientation of the device, the swipe is possible either to the left or to the top.
