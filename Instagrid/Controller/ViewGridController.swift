@@ -223,30 +223,9 @@ class ViewGridController: UIViewController {
         // Fonction activeVerify est appelé pour vérifier le statut de isOK
         activeViewStatusCheck()
         // Si statusCheckForSwipe == true alors le handleGesture est accessible
-        if statusCheckForSwipe == true {
-            if sender.state == .began{
-                // Start of detection
-            } else if sender.state == .changed {
-                // Le statut changed permet de commencer le déplacement de la vue
-                // The status changed allows you to start moving the view
-                
-                // let translation avec un gesture.translation permet le déplacement de la vue
-                // let translation = sender.translation(in: self.view)
-                // En fonction des conditions d'orientation de l'appareil, le swipe est possible soit à gauche soit en haut
-                // Depending on the orientation of the device, the swipe is possible either to the left or to the top.
-                if windowInterfaceOrientation?.isPortrait == true {
-                    sender.direction = .up
-                } else {
-                    sender.direction = .left
-                }
-            } else if sender.state == .ended {
-                // Once the swipe is finished, depending on the screen orientation, the animation is activated either for the swipe up or for the swipe left.
-                
-                // AnimateSwipe verifie si toutes les vues ont une image pour lancer l'animation sinon un message d'erreur apparait
-                animateSwipe()
-            } else if sender.state == .cancelled {
-                self.viewGrid.transform = .identity
-            }
+        if statusCheckForSwipe {
+            animateSwipe(isUp: sender.direction == .up)
+          
         } else {
             let alert = UIAlertController(title: "Incomplete Grid !", message: "Please add images inside the empty frames.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -258,8 +237,8 @@ class ViewGridController: UIViewController {
     
     // Fonction d'animation qui fait disparaitre la vue de l'écran
     /// Animation function that makes the screen view disappear
-    private func animateSwipe(){
-        if windowInterfaceOrientation?.isPortrait == true {
+    private func animateSwipe(isUp: Bool){
+        if windowInterfaceOrientation?.isPortrait == true && isUp {
             // If the device is in portrait mode, the view leaves the screen from the top and reappears in the center of the screen.
             UIView.animate(withDuration: 0.4, animations: {
                 self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -700)
@@ -268,7 +247,7 @@ class ViewGridController: UIViewController {
                     self.shareViewGrid()
                 }
             })
-        } else {
+        } else if windowInterfaceOrientation?.isLandscape == true && !isUp {
             // If the device is in landscape mode the view leaves the screen from the side and reappears in the center of the screen.
             UIView.animate(withDuration: 0.4, animations: {
                 self.viewGrid.transform = CGAffineTransform(translationX: -700, y: 0)
