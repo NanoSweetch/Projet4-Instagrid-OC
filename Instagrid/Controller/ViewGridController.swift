@@ -149,6 +149,12 @@ class ViewGridController: UIViewController {
         }
     }
     
+    enum Orientation {
+        case landscape, portrait
+    }
+    
+    private var orientation: Orientation = .portrait
+    
     // MARK: - willTransition
     
     // Fonction détection de l'orientation
@@ -159,23 +165,20 @@ class ViewGridController: UIViewController {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         coordinator.animate(alongsideTransition: { (context) in
-            guard let windowInterfaceOrientation = self.windowInterfaceOrientation else { return }
             
             // Si l'appareil est en landscape le label change et le swipe aussi et inversement en portrait
             // If the device is in landscape the label changes and the swipe as well and vice versa with portrait.
-            if windowInterfaceOrientation.isLandscape {
+            switch UIDevice.current.orientation {
+            case .landscapeLeft, .landscapeRight:
+                self.orientation = .landscape
                 // activate landscape changes
                 self.swipeLabel.text = "Swipe left to share"
-                //self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
-            } else {
-                // activate portrait changes
-                self.swipeLabel.text = "Swipe up to share"
-                // self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
+            default:
+                self.orientation = .portrait
+                 self.swipeLabel.text = "Swipe up to share"
             }
+           
         })
-    }
-    var windowInterfaceOrientation: UIInterfaceOrientation? {
-        return UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
     }
     
     
@@ -183,47 +186,15 @@ class ViewGridController: UIViewController {
     
     // Fonction de détection de l'action swipe
     /// Swipe action detection function
-    /// - Parameter gesture: Use UIPanGestureRecognizer
-    //    @objc func handlePanGesture(gesture: UIPanGestureRecognizer) {
-    //        // Fonction activeVerify est appelé pour vérifier le statut de isOK
-    //        activeViewStatusCheck()
-    //        // Si statusCheckForSwipe == true alors le handleGesture est accessible
-    //        if statusCheckForSwipe == true {
-    //            if gesture.state == .began{
-    //                // Start of detection
-    //            } else if gesture.state == .changed {
-    //                // Le statut changed permet de commencer le déplacement de la vue
-    //                // The status changed allows you to start moving the view
-    //
-    //                // let translation avec un gesture.translation permet le déplacement de la vue
-    //                let translation = gesture.translation(in: self.view)
-    //                // En fonction des conditions d'orientation de l'appareil, le swipe est possible soit à gauche soit en haut
-    //                // Depending on the orientation of the device, the swipe is possible either to the left or to the top.
-    //                if windowInterfaceOrientation?.isPortrait == true {
-    //                    viewGrid.transform = CGAffineTransform(translationX: 0, y: translation.y)
-    //                } else {
-    //                    viewGrid.transform = CGAffineTransform(translationX: translation.x, y: 0)
-    //                }
-    //            } else if gesture.state == .ended {
-    //                // Once the swipe is finished, depending on the screen orientation, the animation is activated either for the swipe up or for the swipe left.
-    //
-    //                // AnimateSwipe verifie si toutes les vues ont une image pour lancer l'animation sinon un message d'erreur apparait
-    //                animateSwipe()
-    //            } else if gesture.state == .cancelled {
-    //                self.viewGrid.transform = .identity
-    //            }
-    //        } else {
-    //            let alert = UIAlertController(title: "Incomplete Grid !", message: "Please add images inside the empty frames.", preferredStyle: .alert)
-    //            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-    //            present(alert, animated: true)
-    //        }
-    //    }
-    
+    /// - Parameter sender: Use UISwipeGestureRecognizer
     @objc func handleSwipes(_ sender:UISwipeGestureRecognizer) {
-        // Fonction activeVerify est appelé pour vérifier le statut de isOK
+        // Fonction activeViewStatus est appelé pour vérifier si les cadres ne sont pas nil en fonction du style
+        //The activeViewStatus function is called to check if the frames are not nil according to the style.
         activeViewStatusCheck()
-        // Si statusCheckForSwipe == true alors le handleGesture est accessible
+        // Si statusCheckForSwipe == true alors le handleSwipes est accessible
+        // If statusCheckForSwipe == true then the handleSwipes is accessible
         if statusCheckForSwipe {
+            // Lance la fonction de l'animation dans la direction du device
             animateSwipe(isUp: sender.direction == .up)
           
         } else {
@@ -238,7 +209,8 @@ class ViewGridController: UIViewController {
     // Fonction d'animation qui fait disparaitre la vue de l'écran
     /// Animation function that makes the screen view disappear
     private func animateSwipe(isUp: Bool){
-        if windowInterfaceOrientation?.isPortrait == true && isUp {
+        // isUp vérifie que le sens du swipe soit adapté à l'orientation du device
+        if orientation == .portrait && isUp {
             // If the device is in portrait mode, the view leaves the screen from the top and reappears in the center of the screen.
             UIView.animate(withDuration: 0.4, animations: {
                 self.viewGrid.transform = CGAffineTransform(translationX: 0, y: -700)
@@ -247,7 +219,7 @@ class ViewGridController: UIViewController {
                     self.shareViewGrid()
                 }
             })
-        } else if windowInterfaceOrientation?.isLandscape == true && !isUp {
+        } else if orientation == .landscape && !isUp {
             // If the device is in landscape mode the view leaves the screen from the side and reappears in the center of the screen.
             UIView.animate(withDuration: 0.4, animations: {
                 self.viewGrid.transform = CGAffineTransform(translationX: -700, y: 0)
