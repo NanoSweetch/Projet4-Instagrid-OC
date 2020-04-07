@@ -71,7 +71,16 @@ class ViewGridController: UIViewController {
         
         // Initialise l'animation du swipe au premier lancement de l'application
         // Initializes the annimation of the swipe at the first launch of the application.
-        self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
+        //        self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
+        
+        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        
+        upSwipe.direction = .up
+        leftSwipe.direction = .left
+        
+        viewGrid.addGestureRecognizer(upSwipe)
+        viewGrid.addGestureRecognizer(leftSwipe)
     }
     
     // MARK: - IBAction functions
@@ -140,37 +149,102 @@ class ViewGridController: UIViewController {
         }
     }
     
+    // MARK: - willTransition
+    
+    // Fonction détection de l'orientation
+    /// Orientation detection function
+    /// - Parameters:
+    ///   - newCollection: Detects a change in orientation based on the screen size.
+    ///   - coordinator: Call UIViewControllerTransitionCoordinator
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        coordinator.animate(alongsideTransition: { (context) in
+            guard let windowInterfaceOrientation = self.windowInterfaceOrientation else { return }
+            
+            // Si l'appareil est en landscape le label change et le swipe aussi et inversement en portrait
+            // If the device is in landscape the label changes and the swipe as well and vice versa with portrait.
+            if windowInterfaceOrientation.isLandscape {
+                // activate landscape changes
+                self.swipeLabel.text = "Swipe left to share"
+                //self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
+            } else {
+                // activate portrait changes
+                self.swipeLabel.text = "Swipe up to share"
+                // self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
+            }
+        })
+    }
+    var windowInterfaceOrientation: UIInterfaceOrientation? {
+        return UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
+    }
+    
+    
     // MARK: - Swipe detection function
     
     // Fonction de détection de l'action swipe
     /// Swipe action detection function
     /// - Parameter gesture: Use UIPanGestureRecognizer
-    @objc func handlePanGesture(gesture: UIPanGestureRecognizer) {
+    //    @objc func handlePanGesture(gesture: UIPanGestureRecognizer) {
+    //        // Fonction activeVerify est appelé pour vérifier le statut de isOK
+    //        activeViewStatusCheck()
+    //        // Si statusCheckForSwipe == true alors le handleGesture est accessible
+    //        if statusCheckForSwipe == true {
+    //            if gesture.state == .began{
+    //                // Start of detection
+    //            } else if gesture.state == .changed {
+    //                // Le statut changed permet de commencer le déplacement de la vue
+    //                // The status changed allows you to start moving the view
+    //
+    //                // let translation avec un gesture.translation permet le déplacement de la vue
+    //                let translation = gesture.translation(in: self.view)
+    //                // En fonction des conditions d'orientation de l'appareil, le swipe est possible soit à gauche soit en haut
+    //                // Depending on the orientation of the device, the swipe is possible either to the left or to the top.
+    //                if windowInterfaceOrientation?.isPortrait == true {
+    //                    viewGrid.transform = CGAffineTransform(translationX: 0, y: translation.y)
+    //                } else {
+    //                    viewGrid.transform = CGAffineTransform(translationX: translation.x, y: 0)
+    //                }
+    //            } else if gesture.state == .ended {
+    //                // Once the swipe is finished, depending on the screen orientation, the animation is activated either for the swipe up or for the swipe left.
+    //
+    //                // AnimateSwipe verifie si toutes les vues ont une image pour lancer l'animation sinon un message d'erreur apparait
+    //                animateSwipe()
+    //            } else if gesture.state == .cancelled {
+    //                self.viewGrid.transform = .identity
+    //            }
+    //        } else {
+    //            let alert = UIAlertController(title: "Incomplete Grid !", message: "Please add images inside the empty frames.", preferredStyle: .alert)
+    //            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    //            present(alert, animated: true)
+    //        }
+    //    }
+    
+    @objc func handleSwipes(_ sender:UISwipeGestureRecognizer) {
         // Fonction activeVerify est appelé pour vérifier le statut de isOK
         activeViewStatusCheck()
         // Si statusCheckForSwipe == true alors le handleGesture est accessible
         if statusCheckForSwipe == true {
-            if gesture.state == .began{
+            if sender.state == .began{
                 // Start of detection
-            } else if gesture.state == .changed {
+            } else if sender.state == .changed {
                 // Le statut changed permet de commencer le déplacement de la vue
                 // The status changed allows you to start moving the view
                 
                 // let translation avec un gesture.translation permet le déplacement de la vue
-                let translation = gesture.translation(in: self.view)
+                // let translation = sender.translation(in: self.view)
                 // En fonction des conditions d'orientation de l'appareil, le swipe est possible soit à gauche soit en haut
                 // Depending on the orientation of the device, the swipe is possible either to the left or to the top.
                 if windowInterfaceOrientation?.isPortrait == true {
-                    viewGrid.transform = CGAffineTransform(translationX: 0, y: translation.y)
+                    sender.direction = .up
                 } else {
-                    viewGrid.transform = CGAffineTransform(translationX: translation.x, y: 0)
+                    sender.direction = .left
                 }
-            } else if gesture.state == .ended {
+            } else if sender.state == .ended {
                 // Once the swipe is finished, depending on the screen orientation, the animation is activated either for the swipe up or for the swipe left.
                 
                 // AnimateSwipe verifie si toutes les vues ont une image pour lancer l'animation sinon un message d'erreur apparait
                 animateSwipe()
-            } else if gesture.state == .cancelled {
+            } else if sender.state == .cancelled {
                 self.viewGrid.transform = .identity
             }
         } else {
