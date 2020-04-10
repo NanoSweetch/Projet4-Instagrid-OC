@@ -11,7 +11,6 @@ import UIKit
  extension ViewGridController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         // MARK: - UIImagePickerController
         
-        // Fonction d'ajout d'une photo depuis la galerie vers la view grid
         /// Function image picker
         /// - Parameters:
         ///   - picker: Call the UIImagePickerController
