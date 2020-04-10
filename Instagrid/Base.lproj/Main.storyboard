@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -24,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instagrid" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iRT-xf-aAT">
-                                <rect key="frame" x="53.5" y="64" width="307" height="37.5"/>
+                                <rect key="frame" x="53.333333333333343" y="64" width="307.33333333333326" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="iRT-xf-aAT" secondAttribute="height" multiplier="58:5" id="FqS-1f-8zR"/>
                                 </constraints>
@@ -43,10 +44,10 @@
                                 </variation>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="43f-ak-d0m" userLabel="Buttons Stack View">
-                                <rect key="frame" x="15" y="709.5" width="384" height="122.5"/>
+                                <rect key="frame" x="15" y="709.33333333333337" width="384" height="122.66666666666663"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Msa-g0-zcD" userLabel="Button Left">
-                                        <rect key="frame" x="0.0" y="0.0" width="122.5" height="122.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="122.66666666666667" height="122.66666666666667"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" backgroundImage="Layout 1"/>
                                         <connections>
@@ -55,7 +56,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jzn-KL-9oa" userLabel="Button Center">
-                                        <rect key="frame" x="130.5" y="0.0" width="123" height="122.5"/>
+                                        <rect key="frame" x="130.66666666666666" y="0.0" width="122.66666666666666" height="122.66666666666667"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="jzn-KL-9oa" secondAttribute="height" id="nlr-Mf-g4Q"/>
@@ -66,7 +67,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kdX-Fb-puZ" userLabel="Button Right">
-                                        <rect key="frame" x="261.5" y="0.0" width="122.5" height="122.5"/>
+                                        <rect key="frame" x="261.33333333333331" y="0.0" width="122.66666666666669" height="122.66666666666667"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" backgroundImage="Layout Selected 3"/>
                                         <connections>
@@ -122,27 +123,27 @@
                                         <rect key="frame" x="15" y="15" width="354" height="354"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="j0b-SP-Jfn" userLabel="Grid Stack View Top">
-                                                <rect key="frame" x="0.0" y="0.0" width="354" height="169.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="354" height="169.66666666666666"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WB2-gt-IYU" userLabel="View Grid Top Left">
-                                                        <rect key="frame" x="0.0" y="0.0" width="169.5" height="169.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="169.66666666666666" height="169.66666666666666"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </imageView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b7s-c6-jQz" userLabel="View Grid Top Right">
-                                                        <rect key="frame" x="184.5" y="0.0" width="169.5" height="169.5"/>
+                                                        <rect key="frame" x="184.66666666666663" y="0.0" width="169.33333333333337" height="169.66666666666666"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </imageView>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="YxI-IZ-aCS" userLabel="Grid Stack View Bottom">
-                                                <rect key="frame" x="0.0" y="184.5" width="354" height="169.5"/>
+                                                <rect key="frame" x="0.0" y="184.66666666666669" width="354" height="169.33333333333331"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HTY-a8-jdD" userLabel="View Grid Bottom Left">
-                                                        <rect key="frame" x="0.0" y="0.0" width="169.5" height="169.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="169.66666666666666" height="169.33333333333334"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </imageView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5cC-Ee-ibV" userLabel="View Grid Bottom Right">
-                                                        <rect key="frame" x="184.5" y="0.0" width="169.5" height="169.5"/>
+                                                        <rect key="frame" x="184.66666666666663" y="0.0" width="169.33333333333337" height="169.33333333333334"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </imageView>
                                                 </subviews>
@@ -150,28 +151,28 @@
                                         </subviews>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mpa-MZ-wVY" userLabel="L1">
-                                        <rect key="frame" x="15" y="15" width="169.5" height="169.5"/>
+                                        <rect key="frame" x="15" y="15" width="169.66666666666666" height="169.66666666666666"/>
                                         <state key="normal" image="Plus"/>
                                         <connections>
                                             <action selector="topLeft:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7hy-CK-l2u"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BAy-r3-oHi" userLabel="L2">
-                                        <rect key="frame" x="199.5" y="15" width="169.5" height="169.5"/>
+                                        <rect key="frame" x="199.66666666666663" y="15" width="169.33333333333337" height="169.66666666666666"/>
                                         <state key="normal" image="Plus"/>
                                         <connections>
                                             <action selector="topRight:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DtW-Az-eO4"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytU-ed-hh4" userLabel="R1">
-                                        <rect key="frame" x="15" y="199.5" width="169.5" height="169.5"/>
+                                        <rect key="frame" x="15" y="199.66666666666669" width="169.66666666666666" height="169.33333333333331"/>
                                         <state key="normal" image="Plus"/>
                                         <connections>
                                             <action selector="bottomLeft:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wrB-w7-T1L"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EUq-AY-VnY" userLabel="R2">
-                                        <rect key="frame" x="199.5" y="199.5" width="169.5" height="169.5"/>
+                                        <rect key="frame" x="199.66666666666663" y="199.66666666666669" width="169.33333333333337" height="169.33333333333331"/>
                                         <state key="normal" image="Plus"/>
                                         <connections>
                                             <action selector="bottomRight:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hys-Rh-eJm"/>
@@ -247,6 +248,9 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="Pj7-9u-EeK"/>
+                                <exclude reference="EZo-8O-LCx"/>
+                                <exclude reference="Wgv-Nm-3sH"/>
+                                <exclude reference="YJi-BX-qde"/>
                                 <exclude reference="0Y2-FJ-I6o"/>
                                 <exclude reference="A98-0B-gwS"/>
                                 <exclude reference="G5r-Wu-Jvx"/>
@@ -255,9 +259,6 @@
                                 <exclude reference="RQC-Ct-3oi"/>
                                 <exclude reference="lVL-Kw-PIC"/>
                                 <exclude reference="pvi-KO-3mc"/>
-                                <exclude reference="EZo-8O-LCx"/>
-                                <exclude reference="Wgv-Nm-3sH"/>
-                                <exclude reference="YJi-BX-qde"/>
                                 <exclude reference="DQi-Qd-KQz"/>
                                 <exclude reference="kQk-gd-fU3"/>
                             </mask>
@@ -266,6 +267,10 @@
                             <mask key="constraints">
                                 <include reference="Pj7-9u-EeK"/>
                                 <exclude reference="luN-i5-GaA"/>
+                                <exclude reference="Bhx-R5-boT"/>
+                                <include reference="EZo-8O-LCx"/>
+                                <exclude reference="Wgv-Nm-3sH"/>
+                                <include reference="YJi-BX-qde"/>
                                 <exclude reference="0Y2-FJ-I6o"/>
                                 <include reference="A98-0B-gwS"/>
                                 <include reference="G5r-Wu-Jvx"/>
@@ -278,10 +283,6 @@
                                 <exclude reference="lVL-Kw-PIC"/>
                                 <include reference="pvi-KO-3mc"/>
                                 <exclude reference="rwl-cZ-0Hu"/>
-                                <exclude reference="Bhx-R5-boT"/>
-                                <include reference="EZo-8O-LCx"/>
-                                <exclude reference="Wgv-Nm-3sH"/>
-                                <include reference="YJi-BX-qde"/>
                                 <exclude reference="AeH-A2-6vj"/>
                                 <include reference="DQi-Qd-KQz"/>
                                 <include reference="kQk-gd-fU3"/>
@@ -311,11 +312,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Arrow Left" width="316" height="284.5"/>
-        <image name="Arrow Up" width="316" height="253.5"/>
-        <image name="Layout 1" width="27" height="27"/>
-        <image name="Layout 2" width="27" height="27"/>
-        <image name="Layout Selected 3" width="294.5" height="294.5"/>
+        <image name="Arrow Left" width="316" height="284.33334350585938"/>
+        <image name="Arrow Up" width="316" height="253.33332824707031"/>
+        <image name="Layout 1" width="26.666666030883789" height="26.666666030883789"/>
+        <image name="Layout 2" width="26.666666030883789" height="26.666666030883789"/>
+        <image name="Layout Selected 3" width="294.33334350585938" height="294.33334350585938"/>
         <image name="Plus" width="125" height="125"/>
     </resources>
 </document>

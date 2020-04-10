@@ -33,7 +33,6 @@ class ViewGridController: UIViewController {
     @IBOutlet weak var buttonRectangleBottomImg: UIButton!
     @IBOutlet weak var buttonSquareImg: UIButton!
     
-    // Variable d'identification de la vue pour l'image picker
     // View identification variable for image picker
     var selectedImageView: UIImageView?
     
@@ -52,7 +51,6 @@ class ViewGridController: UIViewController {
     }
     
     /// Configuring Button Styles and Actions
-    // Configuration des styles et actions des boutons
     enum StyleGrid {
         case rectangleTop, rectangleBottom, square
     }
@@ -69,9 +67,7 @@ class ViewGridController: UIViewController {
         viewGridBottomLeft.layer.cornerRadius = 4
         viewGridBottomRight.layer.cornerRadius = 4
         
-        // Initialise l'animation du swipe au premier lancement de l'application
         // Initializes the annimation of the swipe at the first launch of the application.
-        //        self.viewGrid.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture)))
         
         let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
         let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
@@ -166,7 +162,6 @@ class ViewGridController: UIViewController {
         super.willTransition(to: newCollection, with: coordinator)
         coordinator.animate(alongsideTransition: { (context) in
             
-            // Si l'appareil est en landscape le label change et le swipe aussi et inversement en portrait
             // If the device is in landscape the label changes and the swipe as well and vice versa with portrait.
             switch UIDevice.current.orientation {
             case .landscapeLeft, .landscapeRight:
@@ -184,17 +179,13 @@ class ViewGridController: UIViewController {
     
     // MARK: - Swipe detection function
     
-    // Fonction de détection de l'action swipe
     /// Swipe action detection function
     /// - Parameter sender: Use UISwipeGestureRecognizer
     @objc func handleSwipes(_ sender:UISwipeGestureRecognizer) {
-        // Fonction activeViewStatus est appelé pour vérifier si les cadres ne sont pas nil en fonction du style
         //The activeViewStatus function is called to check if the frames are not nil according to the style.
         activeViewStatusCheck()
-        // Si statusCheckForSwipe == true alors le handleSwipes est accessible
         // If statusCheckForSwipe == true then the handleSwipes is accessible
         if statusCheckForSwipe {
-            // Lance la fonction de l'animation dans la direction du device
             animateSwipe(isUp: sender.direction == .up)
           
         } else {
@@ -206,10 +197,9 @@ class ViewGridController: UIViewController {
     
     // MARK: - Disappear View Animation function
     
-    // Fonction d'animation qui fait disparaitre la vue de l'écran
     /// Animation function that makes the screen view disappear
     private func animateSwipe(isUp: Bool){
-        // isUp vérifie que le sens du swipe soit adapté à l'orientation du device
+        // isUp verifies that the direction of the swipe is adapted to the orientation of the device.
         if orientation == .portrait && isUp {
             // If the device is in portrait mode, the view leaves the screen from the top and reappears in the center of the screen.
             UIView.animate(withDuration: 0.4, animations: {
@@ -233,18 +223,17 @@ class ViewGridController: UIViewController {
     
     // MARK: - Sharing function
     
-    // Fonction de partage
     /// Sharing function
     private func shareViewGrid(){
-        // Récupération de la viewGrid pour la transformer en image
+        // Retrieving the viewGrid to transform it into an image
         UIGraphicsBeginImageContext(viewGrid.frame.size)
         viewGrid.layer.render(in: UIGraphicsGetCurrentContext()!)
         guard let imageViewGrid = UIGraphicsGetImageFromCurrentImageContext() else {
             return
         }
         
-        // Début de la séquance de partage
-        // On récupère l'image généré pour l'envoyer à l'activity controller
+        // Beginning of the sharing sequence
+        // We recover the generated image to send it to the activity controller.
         let activityViewController = UIActivityViewController(activityItems: [imageViewGrid], applicationActivities: nil)
         activityViewController.completionWithItemsHandler = {
             (activity, success, items, error) in
@@ -254,7 +243,7 @@ class ViewGridController: UIViewController {
                 self.resetAnimate()
             }
         }
-        // On ouvre la pop-up de partage, puis si annulée ou complété on réinitialise les vues avec resetAnimate
+        // Open the share pop-up, then if cancelled or completed, reset the views with resetAnimate.
         present(activityViewController, animated: true, completion: nil)
     }
     
@@ -262,17 +251,15 @@ class ViewGridController: UIViewController {
     
     /// resetAnimate allows to restore the original appearance of the views after use
     private func resetAnimate(){
-        // Supprime les images pour repartir de zéro
         // Deletes images to start from scratch
         viewGridTopLeft.image = nil
         viewGridTopRight.image = nil
         viewGridBottomLeft.image = nil
         viewGridBottomRight.image = nil
         
-        // Fait réapparaitre les boutons Plus
         // Makes the Plus button reappear
         changeAppearanceButton()
-        // Lancement de l'animation du retour de la vue à l'écran
+        // Launching the animation of the return of the view on the screen
         self.viewGrid.transform = .identity
         self.viewGrid.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
@@ -280,7 +267,6 @@ class ViewGridController: UIViewController {
         })
     }
     
-    // Fonction d'initialisation de l'image picker pour les boutons d'ajout d'image de la VG
     /// Image picker initialization function for the VG's add image buttons
     private func initialImgPicker() {
         let image = UIImagePickerController()
@@ -292,7 +278,6 @@ class ViewGridController: UIViewController {
     
     // MARK: - Disappear Plus button function
     
-    // Fonction de disparition et apparition du bouton Plus appelée si l'image a ajouté une image, si oui le bouton Plus disparait, mais reste cliquable pour pouvoir modifier l'image, sinon l'image Plus apparait
     /// Changes the appearance of the views when an image is added
     func changeAppearanceButton(){
         viewGridTopLeft.image != nil ? topLeft.setImage(#imageLiteral(resourceName: "Clear"), for: .normal) : topLeft.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
@@ -303,7 +288,6 @@ class ViewGridController: UIViewController {
     
     // MARK: - Verify nil image function
     
-    // Vérification du statut des vues. Si toutes les vues sont non nil alors la var isOK passe à True et permet de déclencher la fonction swipe.
     /// Checks the status of the views to allow swipe activation if the conditions are met
     private func activeViewStatusCheck() {
         switch viewsActive {
